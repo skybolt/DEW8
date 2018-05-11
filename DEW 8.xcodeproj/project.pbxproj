@@ -21,6 +21,8 @@
 		D42E4C1320A4C7A500B6A4B0 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C1220A4C7A500B6A4B0 /* NotificationController.swift */; };
 		D42E4C1520A4C7A500B6A4B0 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C1420A4C7A500B6A4B0 /* ComplicationController.swift */; };
 		D42E4C1720A4C7A500B6A4B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D42E4C1620A4C7A500B6A4B0 /* Assets.xcassets */; };
+		D42E4C7220A5102F00B6A4B0 /* sharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */; };
+		D42E4C7320A5110E00B6A4B0 /* sharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,7 @@
 		D42E4C1620A4C7A500B6A4B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D42E4C1820A4C7A500B6A4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D42E4C1920A4C7A500B6A4B0 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sharedObjects.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +111,7 @@
 		D42E4BDF20A4C7A100B6A4B0 = {
 			isa = PBXGroup;
 			children = (
+				D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */,
 				D42E4BEA20A4C7A100B6A4B0 /* DEW 8 */,
 				D42E4BFE20A4C7A400B6A4B0 /* DEW 8 WatchKit App */,
 				D42E4C0D20A4C7A500B6A4B0 /* DEW 8 WatchKit Extension */,
@@ -294,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D42E4C7220A5102F00B6A4B0 /* sharedObjects.swift in Sources */,
 				D42E4BEE20A4C7A100B6A4B0 /* ViewController.swift in Sources */,
 				D42E4BEC20A4C7A100B6A4B0 /* AppDelegate.swift in Sources */,
 			);
@@ -303,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D42E4C7320A5110E00B6A4B0 /* sharedObjects.swift in Sources */,
 				D42E4C1320A4C7A500B6A4B0 /* NotificationController.swift in Sources */,
 				D42E4C1520A4C7A500B6A4B0 /* ComplicationController.swift in Sources */,
 				D42E4C1120A4C7A500B6A4B0 /* ExtensionDelegate.swift in Sources */,

@@ -7,20 +7,49 @@
 //
 
 import WatchKit
+import Foundation
 import WatchConnectivity
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-//        <#code#> will put code here
+        print(sharedObjects.debug())
+//
+                if let error = error {
+                    print("WC Session activation failed with error: " + "\(error.localizedDescription)")
+                    return
+                }
+                print("WC Session activated with state: " + "\(activationState.rawValue)")
     }
     
     //put session delegate did change here.
     
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
+        
+        
+//        let okAction = WKAlertAction(title: "OK", style: .default) { }
+//        self.presentAlert(withTitle: sharedObjects.debug(),
+//                          message: "okAction",
+//                          preferredStyle: .alert, actions: [okAction])
     }
+    
+    
+//    func session(_ session: WCSession, activationDidCompleteWith
+//        activationState: WCSessionActivationState, error: Error?) {
+//
+//        if let error = error {
+//            print("WC Session activation failed with error: " + "\(error.localizedDescription)")
+//            return
+//        }
+//        print("WC Session activated with state: " + "\(activationState.rawValue)")
+//    }
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
