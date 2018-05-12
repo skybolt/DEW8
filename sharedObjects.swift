@@ -10,8 +10,13 @@ import Foundation
 
 final class sharedObjects: NSObject {
 
-    static func debug(file: String = #file, line: Int = #line, function: String = #function) -> String {
+    static func fullDebug(file: String = #file, line: Int = #line, function: String = #function) -> String {
         return "\(file):\(line) : \(function)"
+    }
+    
+    
+    static func simpleDebug(function: String = #function) -> String {
+        return "function: : \(function)"
     }
     
 }
