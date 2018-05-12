@@ -50,6 +50,25 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 //        }
 //        print("WC Session activated with state: " + "\(activationState.rawValue)")
 //    }
+    
+    func throwNotification() {
+        print(sharedObjects.simpleDebug())
+    }
+    
+    func checkSessionStatus() {
+        
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            if session.isReachable {
+                throwNotification()
+            } else {
+                //do Not Throw Notification
+            }
+        } else {
+            //notSupported
+        }
+        
+    }
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -58,12 +77,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     func applicationWillResignActive() {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         //schedule background task here
-        scheduleBackgroundRefresh()
+        scheduleBGRefresh()
         scheduleBackgroundSnapshot()
+//        checkSessionStatus()
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
     
-    func scheduleBackgroundRefresh() {
+    func scheduleBGRefresh() {
         print(sharedObjects.simpleDebug())
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 3)
         print(nextFire)
@@ -74,9 +94,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
         print(sharedObjects.simpleDebug())
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 5)
         print(nextFire)
-//        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
         WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
-        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: nil, scheduledCompletion: <#T##(Error?) -> Void#>)
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -104,5 +122,4 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             }
         }
     }
-
 }
