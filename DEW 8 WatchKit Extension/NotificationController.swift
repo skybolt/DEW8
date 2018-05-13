@@ -40,4 +40,13 @@ class NotificationController: WKUserNotificationInterfaceController {
         completionHandler(.custom)
     }
     */
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print(sharedObjects.simpleDebug())
+        completionHandler([.sound, .alert])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(sharedObjects.simpleDebug())
+        completionHandler()
+    }
 }
