@@ -18,6 +18,11 @@
 
 import Foundation
 
+struct globalVars {
+    static var bgRefreshCounter = 0
+    static var bgSnapshotCounter = 0
+}
+
 final class sharedObjects: NSObject {
 
     static func fullDebug(file: String = #file, line: Int = #line, function: String = #function) -> String {

@@ -14,6 +14,11 @@ import UserNotifications
 
 class InterfaceController: WKInterfaceController {
     
+    func counterClear() {
+        globalVars.bgRefreshCounter = 0
+        globalVars.bgSnapshotCounter = 0
+    }
+    
 //    func registerUserNotificationSettings() {
 //        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .alert]) { (granted, error) in
 //            if granted {
