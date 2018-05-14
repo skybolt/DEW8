@@ -33,7 +33,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             if settings.alertSetting == .enabled {
                 let notificationContent = UNMutableNotificationContent()
                 
-                notificationContent.title = self.sessionStatus
+                notificationContent.title = self.sessionComparison
 
                 notificationContent.body = "session changes: " + String(self.reachabilityChangeCount) + ", sessions checked: " + String(self.amountChecked)
                 notificationContent.sound = UNNotificationSound.default();
@@ -68,7 +68,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     
     func sessionReachabilityDidChange(_ session: WCSession) {
         reachabilityChangeCount = reachabilityChangeCount + 1
-        throwNotification()
+//        throwNotification()
+//        checkSessionStatus()
 //        print("reachabilityChangeCount = ", terminator: "")
 //        print(reachabilityChangeCount)
     }
@@ -84,20 +85,32 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     }
     
     var sessionStatus = "not checked"
-    
+    var newStatus = true
+    var oldStatus = true
+    var sessionComparison = "not checked"
     var amountChecked = 0
     
     func checkSessionStatus() {
         amountChecked = amountChecked + 1
         if WCSession.isSupported() {
             let session = WCSession.default
-            if session.isReachable {
+            newStatus = session.isReachable
+            
+//            if session.isReachable {
 //                throwNotification()
-            } else {
+//            } else {
                 //do Not Throw Notification
-            }
+//            }
+            sessionComparison = "\(oldStatus) \(newStatus)"
             sessionStatus = String(session.isReachable)
+            if (oldStatus != newStatus) {
+//                throwNotification()
+            }
+//            else {
+//
+//            }
             throwNotification()
+            oldStatus = session.isReachable
         } //WCSession not supported
     }
 
@@ -109,14 +122,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         //schedule background task here
         scheduleBGRefresh()
-        scheduleBackgroundSnapshot()
+//        scheduleBackgroundSnapshot()
         checkSessionStatus()
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
     
     func scheduleBGRefresh() {
 //        print(sharedObjects.simpleDebug())
-        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 3)
+        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
 //        print(nextFire)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
@@ -136,6 +149,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             // Use a switch statement to check the task type
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
+                checkSessionStatus()
                 // Be sure to complete the background task once you’re done.
                 backgroundTask.setTaskCompletedWithSnapshot(false)
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:

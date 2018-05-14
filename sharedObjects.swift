@@ -6,6 +6,16 @@
 //  Copyright © 2018 rob. All rights reserved.
 //
 
+/* to do list 2018-05-14
+ Show counters:
+ background refresh counter
+ complication refresh counter
+ add both to modular large complication
+ title of modular large is last counter clear time
+ add counter clear function
+ set refreshes for 10 mintes, 15 minutes, do not exhuast refresh budget, if there even is one
+ */
+
 import Foundation
 
 final class sharedObjects: NSObject {
