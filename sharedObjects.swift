@@ -21,6 +21,7 @@ import Foundation
 struct globalVars {
     static var bgRefreshCounter = 0
     static var bgSnapshotCounter = 0
+    static var lastCounterClear = Date()
 }
 
 final class sharedObjects: NSObject {

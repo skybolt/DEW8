@@ -33,6 +33,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         // Call the handler with the current timeline entry
+        if complication.family == .modularLarge {
+            let modLarge = CLKComplicationTemplateModularLargeStandardBody()
+//            modLarge.headerTextProvider = CLKSimpleTextProvider(text: String(globalVars.lastCounterClear))
+//            modLarge.headerTextProvider = CLKDateTextProvider(date: Date(), units: NSCalendar.Unit.day)
+            modLarge.headerTextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
+//            modLarge.headerTextProvider.tintColor = globalVars.stringColor
+            modLarge.body1TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgRefreshCounter) + " refreshes")
+            modLarge.body2TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgSnapshotCounter) + " snapshots")
+            handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: modLarge))
+        }
         handler(nil)
     }
     
@@ -50,6 +60,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
         // This method will be called once per supported complication, and the results will be cached
+        //modularLarge template added by RC. Not sure why LargeModularComplication already works if I haven't created a template yet.
+        if complication.family == .modularLarge {
+            let modLarge = CLKComplicationTemplateModularLargeStandardBody()
+            modLarge.headerTextProvider.tintColor = UIColor(red: 1, green: 1, blue: 0, alpha: 1)
+            modLarge.headerTextProvider = CLKSimpleTextProvider(text: "no data")
+            modLarge.body1TextProvider = CLKSimpleTextProvider(text: "no data")
+            modLarge.body2TextProvider = CLKSimpleTextProvider(text: "no data")
+            handler(modLarge)
+        }
+        
         handler(nil)
     }
     
