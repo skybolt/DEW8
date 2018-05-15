@@ -59,7 +59,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     }
 
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-//        print(sharedObjects.simpleDebug())
+        print(sharedObjects.simpleDebug())
     }
     
     //put session delegate did change here.
@@ -82,8 +82,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             session.delegate = self
             session.activate()
         }
-        scheduleBackgroundTask()
-        scheduleSnapshotTask()
     }
     
     
@@ -94,9 +92,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     var amountChecked = 0
     
     func checkSessionStatus() {
+//        print(sharedObjects.simpleDebug())
         amountChecked = amountChecked + 1
         if WCSession.isSupported() {
             let session = WCSession.default
+//            print("session is: \(session.activationState.rawValue)")
             newStatus = session.isReachable
             if (newStatus == true) {
                 globalVars.newStatusString = "T"
@@ -109,25 +109,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             } else {
                 globalVars.oldStatusString = "F"
             }
-            
-//            if session.isReachable {
-//                throwNotification()
-//            } else {
-                //do Not Throw Notification
-//            }
-            
-            
             sessionComparison = "\(oldStatus) \(newStatus)"
             sessionStatus = String(newStatus)
-            if (oldStatus != newStatus) {
+//            if (oldStatus != newStatus){
+                if (newStatus == false) {
                 throwNotification()
-            }
-            else {
-
-            }
-//            throwNotification()
+            } //no else
             oldStatus = session.isReachable
-        } //WCSession not supported
+        } //end if WCSession is supported? no else
     }
 
     func applicationDidBecomeActive() {
@@ -137,6 +126,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 
     func applicationWillResignActive() {
         checkSessionStatus()
+        scheduleBackgroundTask()
+        scheduleSnapshotTask()
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
     
@@ -173,11 +164,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
         for task in backgroundTasks {
-            print("task is: ", terminator: "")
+            print("Bigtask is: ", terminator: "")
             print(task)
             // Use a switch statement to check the task type
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
+                print("Atask is: ", terminator: "")
+                print(task)
                 globalVars.lastBackgroundTask = Date()
                 globalVars.bgRefreshCounter = globalVars.bgRefreshCounter + 1
                 scheduleSnapshotTask()
@@ -188,6 +181,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             
             
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
+                print("Stask is: ", terminator: "")
+                print(task)
                 
                 globalVars.lastSnapshotTask = Date()
                 globalVars.bgSnapshotCounter = globalVars.bgSnapshotCounter + 1

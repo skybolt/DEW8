@@ -50,41 +50,29 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             let modLarge = CLKComplicationTemplateModularLargeStandardBody()
             let currentString = String(Date().description(with: nil))
             let clearedString = String((globalVars.lastCounterClear).description(with: nil))
-//            modLarge.headerTextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
-//            modLarge.headerTextProvider = CLKSimpleTextProvider(text: "\(currentString) \(clearedString), \(globalVars.oldStatusString)\(globalVars.newStatusString)")
-//            modLarge.headerTextProvider = CLKTimeTextProvider(date: Date())
-            print("\(currentString) \(clearedString) \(globalVars.lastBackgroundTask) \(globalVars.lastSnapshotTask)")
-//            modLarge.headerTextProvider.tintColor = globalVars.stringColor
-//            modLarge.body1TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgRefreshCounter) + " refreshes")
-//            modLarge.body2TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgSnapshotCounter) + " snapshots")
-////            modLarge.body1TextProvider = CLKTimeTextProvider(date: Date())
-//            modLarge.body2TextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
+            print("complicationController strings = curr: \(currentString) cleared: \(clearedString) lastBG: \(globalVars.lastBackgroundTask) lastSN: \(globalVars.lastSnapshotTask)")
             modLarge.headerTextProvider = CLKSimpleTextProvider(text: "ref: " + String(globalVars.bgRefreshCounter) + ", snp: " + String(globalVars.bgSnapshotCounter) + " " + String(globalVars.oldStatusString) + String(globalVars.newStatusString))
             modLarge.body1TextProvider = CLKTimeTextProvider(date: globalVars.lastBackgroundTask)
             modLarge.body2TextProvider = CLKTimeTextProvider(date: globalVars.lastSnapshotTask)
+            //github not tracking changes in this file properly.
             handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: modLarge))
+            
+            //saving these here due to gitHub not doing a good job of committing cfhanges to complication controller
+            //            modLarge.headerTextProvider.tintColor = globalVars.stringColor
+            //            modLarge.body1TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgRefreshCounter) + " refreshes")
+            //            modLarge.body2TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgSnapshotCounter) + " snapshots")
+            ////            modLarge.body1TextProvider = CLKTimeTextProvider(date: Date())
+            //            modLarge.body2TextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
+            
+            
+            
+            //            modLarge.headerTextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
+            //            modLarge.headerTextProvider = CLKSimpleTextProvider(text: "\(currentString) \(clearedString), \(globalVars.oldStatusString)\(globalVars.newStatusString)")
+            //            modLarge.headerTextProvider = CLKTimeTextProvider(date: Date())
         }
         handler(nil)
     }
-//
-//    func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
-//        // Call the handler with the current timeline entry
-//        if complication.family == .modularLarge {
-//            let modLarge = CLKComplicationTemplateModularLargeStandardBody()
-//            let fart = String(Date().description(with: nil))
-//            let farter = String((globalVars.lastCounterClear).description(with: nil))
-//            modLarge.headerTextProvider = CLKTimeTextProvider(date: globalVars.lastCounterClear)
-//            modLarge.headerTextProvider = CLKSimpleTextProvider(text: "\(fart) \(farter)")
-//            modLarge.headerTextProvider = CLKTimeTextProvider(date: Date())
-//            print("\(fart) \(farter)")
-//            //            modLarge.headerTextProvider.tintColor = globalVars.stringColor
-//            modLarge.body1TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgRefreshCounter) + " refreshes")
-//            modLarge.body2TextProvider = CLKSimpleTextProvider(text: String(globalVars.bgSnapshotCounter) + " snapshots")
-//            handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: modLarge))
-//        }
-//        handler(nil)
-//    }
-    
+
     func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
         // Call the handler with the timeline entries prior to the given date
         handler(nil)

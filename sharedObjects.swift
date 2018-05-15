@@ -30,13 +30,13 @@ struct globalVars {
 
 final class sharedObjects: NSObject {
 
-    static func fullDebug(file: String = #file, line: Int = #line, function: String = #function, DateCalled: String = Date().description(with: Locale.current)) -> String {
+    static func fullDebug(file: String = #file, line: Int = #line, function: String = #function, DateCalled: Date = Date()) -> String {
         return "\(file):\(line) : \(function) on \(DateCalled)"
     }
     
     
-    static func simpleDebug(function: String = #function) -> String {
-        return "function: : \(function)"
+    static func simpleDebug(function: String = #function, dateCalled: Date = Date()) -> String {
+        return "function: : \(function) on \(dateCalled)"
     }
     
 }
