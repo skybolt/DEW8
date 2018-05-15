@@ -82,8 +82,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             session.delegate = self
             session.activate()
         }
-        scheduleBGRefresh()
-        scheduleBackgroundSnapshot()
+        scheduleBackgroundTask()
+        scheduleSnapshotTask()
     }
     
     
@@ -122,14 +122,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     }
 
     func applicationWillResignActive() {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        //schedule background task here
-//        scheduleBackgroundSnapshot()
         checkSessionStatus()
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
     
-    func scheduleBGRefresh() {
+    func scheduleBackgroundTask() {
 //        print(sharedObjects.simpleDebug())
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
         print(nextFire)
@@ -137,7 +134,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
     
-    func scheduleBackgroundSnapshot() {
+    func scheduleSnapshotTask() {
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
         WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
@@ -152,11 +149,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
                 globalVars.bgRefreshCounter = globalVars.bgRefreshCounter + 1
                 // Be sure to complete the background task once you’re done.
+                scheduleSnapshotTask()
                 backgroundTask.setTaskCompletedWithSnapshot(false)
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
                 globalVars.bgSnapshotCounter = globalVars.bgSnapshotCounter + 1
-                scheduleBackgroundSnapshot()
+                scheduleBackgroundTask()
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
             case let connectivityTask as WKWatchConnectivityRefreshBackgroundTask:
                 // Be sure to complete the connectivity task once you’re done.
