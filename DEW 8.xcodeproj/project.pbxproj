@@ -23,6 +23,7 @@
 		D42E4C1720A4C7A500B6A4B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D42E4C1620A4C7A500B6A4B0 /* Assets.xcassets */; };
 		D42E4C7220A5102F00B6A4B0 /* sharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */; };
 		D42E4C7320A5110E00B6A4B0 /* sharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */; };
+		D4DC087320AB330A00E5F68A /* DanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DC087220AB330A00E5F68A /* DanController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		D42E4C1820A4C7A500B6A4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D42E4C1920A4C7A500B6A4B0 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		D42E4C7120A5102F00B6A4B0 /* sharedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sharedObjects.swift; sourceTree = "<group>"; };
+		D4DC087220AB330A00E5F68A /* DanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				D42E4C1620A4C7A500B6A4B0 /* Assets.xcassets */,
 				D42E4C1820A4C7A500B6A4B0 /* Info.plist */,
 				D42E4C1920A4C7A500B6A4B0 /* PushNotificationPayload.apns */,
+				D4DC087220AB330A00E5F68A /* DanController.swift */,
 			);
 			path = "DEW 8 WatchKit Extension";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				D42E4C7320A5110E00B6A4B0 /* sharedObjects.swift in Sources */,
 				D42E4C1320A4C7A500B6A4B0 /* NotificationController.swift in Sources */,
 				D42E4C1520A4C7A500B6A4B0 /* ComplicationController.swift in Sources */,
+				D4DC087320AB330A00E5F68A /* DanController.swift in Sources */,
 				D42E4C1120A4C7A500B6A4B0 /* ExtensionDelegate.swift in Sources */,
 				D42E4C0F20A4C7A500B6A4B0 /* InterfaceController.swift in Sources */,
 			);

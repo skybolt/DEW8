@@ -98,20 +98,33 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
         if WCSession.isSupported() {
             let session = WCSession.default
             newStatus = session.isReachable
+            if (newStatus == true) {
+                globalVars.newStatusString = "T"
+            } else {
+                globalVars.newStatusString = "F"
+            }
+            
+            if (oldStatus == true) {
+                globalVars.oldStatusString = "T"
+            } else {
+                globalVars.oldStatusString = "F"
+            }
             
 //            if session.isReachable {
 //                throwNotification()
 //            } else {
                 //do Not Throw Notification
 //            }
+            
+            
             sessionComparison = "\(oldStatus) \(newStatus)"
             sessionStatus = String(newStatus)
             if (oldStatus != newStatus) {
-//                throwNotification()
+                throwNotification()
             }
-//            else {
-//
-//            }
+            else {
+
+            }
 //            throwNotification()
             oldStatus = session.isReachable
         } //WCSession not supported
@@ -119,6 +132,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        checkSessionStatus()
     }
 
     func applicationWillResignActive() {
@@ -127,16 +141,33 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     }
     
     func scheduleBackgroundTask() {
-//        print(sharedObjects.simpleDebug())
+        print(sharedObjects.simpleDebug(), terminator: " at ")
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
+        print("at \(Date())", terminator: ", will fire at: ")
         print(nextFire)
-        print(Date())
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
     
     func scheduleSnapshotTask() {
-        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
+        print(sharedObjects.simpleDebug(), terminator: " at ")
+        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 70)
+        print("at \(Date())", terminator: ", will fire at: ")
+        print(nextFire)
         WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
+//        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: backgroundTask.userInfo) { _ in } //userinfo apparently will supress error in console, maybe increase reliability? 
+    }
+    
+    func updateComplicationDisplay() {
+        let complicationsController = ComplicationController()
+        complicationsController.reloadOrExtendData()
+    }
+    
+    func reloadComplicationData(backgroundTask: WKApplicationRefreshBackgroundTask) {
+        checkSessionStatus()
+        globalVars.bgRefreshCounter = globalVars.bgRefreshCounter + 1
+        self.updateComplicationDisplay()
+        let nextFire = Date(timeIntervalSinceNow: 60)        
+        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -147,15 +178,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             // Use a switch statement to check the task type
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
+                globalVars.lastBackgroundTask = Date()
                 globalVars.bgRefreshCounter = globalVars.bgRefreshCounter + 1
-                // Be sure to complete the background task once you’re done.
                 scheduleSnapshotTask()
+                reloadComplicationData(backgroundTask: backgroundTask)
+                
+                // Be sure to complete the background task once you’re done.
                 backgroundTask.setTaskCompletedWithSnapshot(false)
+            
+            
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
-                // Snapshot tasks have a unique completion call, make sure to set your expiration date
+                
+                globalVars.lastSnapshotTask = Date()
                 globalVars.bgSnapshotCounter = globalVars.bgSnapshotCounter + 1
                 scheduleBackgroundTask()
+                
+                // Snapshot tasks have a unique completion call, make sure to set your expiration date
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
+            
             case let connectivityTask as WKWatchConnectivityRefreshBackgroundTask:
                 // Be sure to complete the connectivity task once you’re done.
                 connectivityTask.setTaskCompletedWithSnapshot(false)

@@ -22,12 +22,16 @@ struct globalVars {
     static var bgRefreshCounter = 0
     static var bgSnapshotCounter = 0
     static var lastCounterClear = Date()
+    static var lastSnapshotTask = Date()
+    static var lastBackgroundTask = Date()
+    static var oldStatusString = "N"
+    static var newStatusString = "N"
 }
 
 final class sharedObjects: NSObject {
 
-    static func fullDebug(file: String = #file, line: Int = #line, function: String = #function) -> String {
-        return "\(file):\(line) : \(function)"
+    static func fullDebug(file: String = #file, line: Int = #line, function: String = #function, DateCalled: String = Date().description(with: Locale.current)) -> String {
+        return "\(file):\(line) : \(function) on \(DateCalled)"
     }
     
     
