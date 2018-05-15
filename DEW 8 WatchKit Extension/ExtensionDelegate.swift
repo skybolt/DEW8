@@ -84,9 +84,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
         }
     }
     
-    var sessionStatus = "not checked"
+    
     var newStatus = true
     var oldStatus = true
+    var sessionStatus = "not checked"
     var sessionComparison = "not checked"
     var amountChecked = 0
     
@@ -102,14 +103,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
                 //do Not Throw Notification
 //            }
             sessionComparison = "\(oldStatus) \(newStatus)"
-            sessionStatus = String(session.isReachable)
+            sessionStatus = String(newStatus)
             if (oldStatus != newStatus) {
 //                throwNotification()
             }
 //            else {
 //
 //            }
-            throwNotification()
+//            throwNotification()
             oldStatus = session.isReachable
         } //WCSession not supported
     }
@@ -130,22 +131,21 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     func scheduleBGRefresh() {
 //        print(sharedObjects.simpleDebug())
         let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
-//        print(nextFire)
+        print(nextFire)
+        print(Date())
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
     
     func scheduleBackgroundSnapshot() {
-//        print(sharedObjects.simpleDebug())
-        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 5)
-//        print(nextFire)
+        let nextFire = Date(timeIntervalSinceNow: 1 * 1 * 60)
         WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: nextFire, userInfo: nil) { _ in }
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
         for task in backgroundTasks {
-//            print("task is: ", terminator: "")
-//            print(task)
+            print("task is: ", terminator: "")
+            print(task)
             // Use a switch statement to check the task type
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
@@ -155,6 +155,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
                 backgroundTask.setTaskCompletedWithSnapshot(false)
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
+                globalVars.bgSnapshotCounter = globalVars.bgSnapshotCounter + 1
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
             case let connectivityTask as WKWatchConnectivityRefreshBackgroundTask:
                 // Be sure to complete the connectivity task once you’re done.
