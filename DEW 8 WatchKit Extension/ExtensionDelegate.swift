@@ -169,11 +169,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             // Use a switch statement to check the task type
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
-                print("Atask is: ", terminator: "")
-                print(task)
+                //this is called by scheduleBackgroundTask
+                //book uses this to refresh complications
+//                print("Atask is: ", terminator: "")
+//                print(task)
                 globalVars.lastBackgroundTask = Date()
                 globalVars.bgRefreshCounter = globalVars.bgRefreshCounter + 1
-                scheduleSnapshotTask()
+                scheduleBackgroundTask()
                 reloadComplicationData(backgroundTask: backgroundTask)
                 
                 // Be sure to complete the background task once you’re done.
@@ -181,12 +183,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
             
             
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
-                print("Stask is: ", terminator: "")
-                print(task)
+                //this is called by scheduleSnapshotTask. Used by dock snapshot?
+//                print("Stask is: ", terminator: "")
+//                print(task)
                 
                 globalVars.lastSnapshotTask = Date()
                 globalVars.bgSnapshotCounter = globalVars.bgSnapshotCounter + 1
-                scheduleBackgroundTask()
+                scheduleSnapshotTask()
                 
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
